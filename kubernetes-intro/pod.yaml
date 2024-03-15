@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: homework-websrv
+  namespace: homework
+spec:
+  containers:
+  - name: websrv
+    image: nginx:1.15
+    ports:
+    - containerPort: 8000
+    volumeMounts:
+    - name: workdir
+      mountPath: /usr/share/nginx/html/homework
+    lifecycle:
+        preStop:
+          exec:
+            command: ["sh", "-c",  "rm -R /usr/share/nginx/html/homework"]
+  initContainers:
+  - name: install
+    image: busybox:1.28
+    command:
+    - wget
+    - "-O"
+    - "/init/index.html"
+    - http://info.cern.ch
+    volumeMounts:
+    - name: workdir
+      mountPath: "/init"
+  dnsPolicy: Default
+  volumes:
+  - name: workdir
+    emptyDir: {}
