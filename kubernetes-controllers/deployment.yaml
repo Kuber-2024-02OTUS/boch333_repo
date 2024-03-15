@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: homework
+  name: homework-deployment
+  labels:
+    app: homework-websrv
+spec:
+  selector:
+    matchLabels:
+      app: homework-websrv
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: homework-websrv
+    spec:
+      dnsPolicy: Default
+      volumes:
+      - name: workdir
+        emptyDir: {}
+      containers:
+      - name: websrv
+        image: nginx:1.15
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html/homework
+          name: workdir
+        readinessProbe:
+          exec:
+            command:
+            - cat
+            - /usr/share/nginx/html/homework/index.html
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        lifecycle:
+          preStop:
+            exec:
+              command: ["sh", "-c", "rm -R /usr/share/nginx/html/homework"]
+      initContainers:
+      - name: install
+        image: busybox:1.28
+        command:
+        - wget
+        - "-O"
+        - "/init/index.html"
+        - http://info.cern.ch
+        volumeMounts:
+        - mountPath: /init
+          name: workdir
+      nodeSelector:
+        homework: "true"
+
+
+
