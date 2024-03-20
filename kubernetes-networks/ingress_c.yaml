@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   namespace: homework
-  name: minimal-ingres
+  name: minimal-ingress-c
   annotations:
     nginx.ingress.kubernetes.io/app-root: /homepage
   spec:
