@@ -23,7 +23,7 @@
  - Пункт 2
     kubectl create -f .\kubernetes-intro\namespace.yaml
  - Пункт 3
-    kubectl apply -f .\kubernetes-intro\deployment.yaml
+     
 
     
 ## Как проверить работоспособность:

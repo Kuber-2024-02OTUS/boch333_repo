@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: homework
+  name: minimal-ingres
+  annotations:
+    nginx.ingress.kubernetes.io/app-root: /homepage
+  spec:
+    ingressClassName: nginx
+    rules:
+    - host: homework.otus
+      http:
+        paths:
+        - pathType: Prefix
+          path: /homework
+          backend:
+            service:
+              name: websrv-service
+              port:
+                number: 80

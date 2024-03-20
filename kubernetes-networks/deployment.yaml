@@ -27,16 +27,16 @@ spec:
       - name: websrv
         image: nginx:1.15
         ports:
-        - containerPort: 8000
+        - name: websrv-port
+          containerPort: 8000
         volumeMounts:
         - mountPath: /usr/share/nginx/html/homework
           name: workdir
         readinessProbe:
-          exec:
-            command:
-            - cat
-            - /usr/share/nginx/html/homework/index.html
-          initialDelaySeconds: 3
+          httpGet:
+            path: /index.html
+            port: websrv-port
+          initialDelaySeconds: 5
           periodSeconds: 5
         lifecycle:
           preStop:
