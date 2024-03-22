@@ -25,9 +25,9 @@ spec:
       - name: websrv
         image: roflmaoinmysoul/otus:v2.0
         resources:
-         limits:
-           memory: "64Mi"
-           cpu: "200m"
+          limits:
+            memory: "40Mi"
+            cpu: "100m"
         ports:
         - name: websrv-port
           containerPort: 8080
