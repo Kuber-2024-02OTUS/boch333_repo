@@ -19,8 +19,12 @@ spec:
     spec:
       dnsPolicy: Default
       volumes:
-      - name: workdir
-        emptyDir: {}
+      - name: workdir-pvs
+        persistentVolumeClaim:
+          claimName: websrv-pvc 
+      - name: workdir-cm
+        configMap:
+          name: websrv-info
       containers:
       - name: websrv
         image: roflmaoinmysoul/otus:v2.0
@@ -32,8 +36,10 @@ spec:
         - name: websrv-port
           containerPort: 8080
         volumeMounts:
-        - mountPath: /tmp/homework
-          name: workdir
+        - mountPath: /homework
+          name: workdir-pvs
+        - mountPath: /homework/conf
+          name: workdir-cm
         readinessProbe:
           httpGet:
             path: /index.html
@@ -57,7 +63,7 @@ spec:
         - "http://info.cern.ch"
         volumeMounts:
         - mountPath: /init
-          name: workdir
+          name: workdir-pvs
       nodeSelector:
         homework: "true"
 
