@@ -5,50 +5,69 @@
 
 ## В процессе сделано:
  - Пункт 1
-   Манифест пространства имен
-    .\kubernetes-intro\namespace.yaml
-   В манифесте .\kubernetes-controllers\deployment.yaml пода изменен объект readinessProbe:
+   Манифест PersistentVolumeClaim
+    .\kubernetes-volumes\pvc.yaml
+   В манифесте .\kubernetes-volumes\pvc.yaml используеться стандартный storageClass:
 
-      readinessProbe:
-         httpGet:
-            path: /index.html
-            port: websrv-port
-         initialDelaySeconds: 5
-         periodSeconds: 5
-
-   Измененый манифест .\kubernetes-networks\deployment.yaml
+      storageClassName: standard
     
  - Пункт 2
-   Создан манифест 
-      .\kubernetes-networks\service.yaml
+   Создан манифест configmap
+     .\kubernetes-volumes\configmap.yaml
+   Для пары ключь  значение:
 
+       data:
+          log_level: INFO   
+       
  - Пункт 3
-   Установлен аддон к minikub ingress-контроллера nginx
-      minikube addons enable ingress
-      kubectl get pods -n ingress-nginx
+   В манифест deployment.yaml внесены изменения: 
+   Изменена спецификация volume
+
+       volumes:
+       - name: workdir-pvs
+         persistentVolumeClaim:
+           claimName: websrv-pvc 
+
+   Изменены спецификации монтировани
+
+        volumeMounts:
+        - mountPath: /homework
+          name: workdir-pvs
+     
+        volumeMounts:
+        - mountPath: /init
+          name: workdir-pvs
 
  - Пункт 4 
- Создан манифест объекта ingress (Согласно заданию)
-      .\kubernetes-networks\ingress.yaml
+ В манифесте deployment.yaml добавлено монтирование ранее созданного configMap как volume
+      
+       volumes: 
+       - name: workdir-cm
+         configMap:
+           name: websrv-info
+
+ изменена спецификация монтирования 
+
+       volumeMounts:
+       - mountPath: /homework/conf
+         name: workdir-cm
 
  - Пункт 5 с *
-   Создан манифест объекта с описанием правила rewrite
-      .\kubernetes-networks\ingress_c.yaml
+   Создан манифест описывающий объект типа storageClass
+      .\kubernetes-volumes\storageClass.yaml
+ - Пункт 6 с *
+   Внесены изменения в pvc.yaml
+
+       storageClassName: homework-storageClass
 
 ## Как запустить проект:
- - Пункт 1
+ - Все пункты кроме 5
       minikube start
-      kubectl create -f .\kubernetes-networks\namespace.yaml
-      kubectl apply -f .\kubernetes-networks\deployment.yaml
- - Пункт 2
-      kubectl apply -f .\kubernetes-networks\service.yaml
- - Пункт 3 (проверить)
-      kubectl get pods -n ingress-nginx    
- - Пункт 4         
-      kubectl apply -f .\kubernetes-networks\ingress.yaml
- - Пункт 5   
-      kubectl delete -f .\kubernetes-networks\ingress.yaml
-      kubectl apply -f .\kubernetes-networks\ingress_c.yaml
+      cd ./kubernetes-volumes
+      kubectl create -f namespace.yaml
+      kubectl apply -f deployment.yaml -f service.yaml -f ingress.yaml -f pvc.yaml -f configmap.yaml
+ - Пункт 5
+      kubectl apply -f .\kubernetes-volumes\storageClass.yaml
     
 ## Как проверить работоспособность:
 

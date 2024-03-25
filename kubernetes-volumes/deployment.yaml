@@ -56,7 +56,7 @@ spec:
                 sed -i 's/SERVER_PORT = 8000/SERVER_PORT = 8080/' server.py 
                 cat server.py >  /homework/server_test.py 
                 sed -i '5a\        with open('"'"'/homework/conf/log_level'"'"') as fp:' server.py 
-                sed -i '6a\             file_data = fp.read(1)' server.py 
+                sed -i '6a\             file_data = fp.read()' server.py 
                 sed -i '10d' server.py 
                 sed -i '9a\        self.wfile.write(b'"'"'Open file log_level: '"'"' + file_data.encode())' server.py 
           preStop:
