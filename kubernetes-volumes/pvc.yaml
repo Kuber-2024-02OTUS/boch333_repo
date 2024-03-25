@@ -6,7 +6,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: "" # storageClassName: "homework-storageClass"
+  storageClassName: standard
   resources:
     requests:
-      storage: 1G
+      storage: 2Mi

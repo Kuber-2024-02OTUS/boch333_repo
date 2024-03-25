@@ -12,7 +12,7 @@ spec:
   - host: "homework.otus"
     http:
       paths:
-      - path: "/index.html"
+      - path: "/conf/file"
         pathType: Prefix
         backend:
           service:
