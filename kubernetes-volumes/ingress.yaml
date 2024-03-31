@@ -1,20 +1,22 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  name: websrv-ingress
   namespace: homework
-  name: websrv-ingress-c
   annotations:
-    nginx.ingress.kubernetes.io/app-root: /homepage
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
   ingressClassName: nginx
   rules:
-  - host: homework.otus
+  - host: "homework.otus"
     http:
       paths:
-      - pathType: Prefix
-        path: /
+      - path: "/conf/file"
+        pathType: Prefix
         backend:
           service:
             name: websrv-service
             port:
               number: 80
+
