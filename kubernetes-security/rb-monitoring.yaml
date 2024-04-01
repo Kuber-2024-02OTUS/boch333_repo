@@ -3,10 +3,10 @@ kind: RoleBinding
 metadata:
   name: rb-monitoring
 roleRef:
-  apiGroup: rbac.authorization.k8s.io
+  apiGroup: ""
   kind: ClusterRole
   name: role-monitoring
 subjects:
-- apiGroup: rbac.authorization.k8s.io
+- apiGroup: ""
   kind: ServiceAccount
   name: monitoring
