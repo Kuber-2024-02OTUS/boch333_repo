@@ -5,10 +5,10 @@
 
 ## В процессе сделано:
  - Пункт 1
-   Манифест  ServiceAccount, ClusterRole, ClusterRoleBinding
-    .\kubernetes-security\sa-monitoring.yaml
-    .\kubernetes-security\rb-monitoring.yaml
-    .\kubernetes-security\cr-monitoring.yaml
+    Манифест  ServiceAccount, ClusterRole, ClusterRoleBinding
+     .\kubernetes-security\sa-monitoring.yaml
+     .\kubernetes-security\rb-monitoring.yaml
+     .\kubernetes-security\cr-monitoring.yaml
     
  - Пункт 2
     В манифест deployment.yaml добавлена строка
