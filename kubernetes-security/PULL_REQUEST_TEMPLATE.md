@@ -101,47 +101,35 @@
 
  - Пункт 3    
 
-      kubectl -n homework get serviceaccount/cd -o yaml
-      kubectl  get roles -n homework
-      kubectl  get rolebinding -n homework     
+       kubectl -n homework get serviceaccount/cd -o yaml
+       kubectl  get roles -n homework
+       kubectl  get rolebinding -n homework     
 
  - Пункт 4
 
-      kubectl config view
-
-      export KUBECONFIG=~/.kube/kubeconfig
-
-      kubectl config --kubeconfig=kubeconfig view
-
-      kubectl config get-contexts
-
-      kubectl config current-context
-
-      kubectl config view
+       kubectl config view
+       export KUBECONFIG=~/.kube/kubeconfig
+       kubectl config --kubeconfig=kubeconfig view
+       kubectl config get-contexts
+       kubectl config current-context
+       kubectl config view
 
  - Пункт 5
 
-      kubectl create token cd --duration 24h > ~/.kube/token
-
-      ******
-
-      kubectl config set-credentialscdr --token=$(kubectl get secret cd-user-secret -o jsonpath={.data.token} | base64 -d)
-
-      при использование не временного токена появляеться сообщение
+       kubectl create token cd --duration 24h > ~/.kube/token
+       ******
+       kubectl config set-credentialscdr --token=$(kubectl get secret cd-user-secret -o jsonpath={.data.token} | base64 -d)
+   
+   при использование не временного токена появляеться сообщение
 
         Warning: Use tokens from the TokenRequest API or manually created secret-based tokens instead of auto-generated secret-based tokens.
         User "cd" set.
 
  - Пункт 6 *
-
-    kubectl get ingress -n homework
-    vi /etc/hosts > "minikube ip" homework.otus (у меня: "192.168.49.2 homework.otus" )
-    minikube tunnel
-    curl http://homework.otus/conf/metric
-
-      
-
-
+      kubectl get ingress -n homework
+      vi /etc/hosts > "minikube ip" homework.otus (у меня: "192.168.49.2 homework.otus" )
+      minikube tunnel
+      curl http://homework.otus/conf/metric
 
 ## PR checklist:
  - [x] Выставлен label с темой домашнего задания
