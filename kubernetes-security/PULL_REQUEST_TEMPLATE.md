@@ -29,6 +29,37 @@
     Для постоянного токена используеться секрет cd-user-secret созданный при создание SA.
 
  - Пункт 6 *
+    Добавили в configmap.yaml строки 
+            kubeapi:  https://192.168.49.2:8443
+            sa: /var/run/secrets/kubernetes.io/serviceaccount
+     В файле deployment.yaml
+          env:
+          - name: KUBEAPI
+            valueFrom:
+              configMapKeyRef:
+                name: websrv-info
+                key: kubeapi
+          - name: SA
+            valueFrom:
+              configMapKeyRef:
+                name: websrv-info
+                key: sa
+     .....
+
+            exec:
+              command: 
+              - sh
+              - -c
+              - |
+                sed -i 's/SERVER_PORT = 8000/SERVER_PORT = 8080/' server.py 
+                sed -i '5a\        with open('"'"'/homework/metrics.html'"'"') as fp:' server.py 
+                sed -i '6a\             file_data = fp.read()' server.py 
+                sed -i '10d' server.py 
+                sed -i '9a\        self.wfile.write(b'"'"'Open file metrins.html: '"'"' + file_data.encode())' server.py 
+                export CACERT=${SA}/ca.crt
+                export TOKEN=$(cat ${SA}/token)
+                export NAMESPACE=$(cat ${SA}/namespace)
+                curl --cacert ${CACERT} --header """Authorization: Bearer ${TOKEN}""" -X GET ${KUBEAPI}/metrics > /homework/metrics.html
 
 ## Как запустить проект:
  - Все пункты
@@ -103,7 +134,11 @@
 
  - Пункт 6 *
 
-     
+    kubectl get ingress -n homework
+    vi /etc/hosts > "minikube ip" homework.otus (у меня: "192.168.49.2 homework.otus" )
+    minikube tunnel
+    curl http://homework.otus/conf/metric
+
       
 
 
