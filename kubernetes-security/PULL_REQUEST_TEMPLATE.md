@@ -5,34 +5,45 @@
 
 ## В процессе сделано:
  - Пункт 1
-    Манифест  ServiceAccount, ClusterRole, ClusterRoleBinding
-     .\kubernetes-security\sa-monitoring.yaml
-     .\kubernetes-security\rb-monitoring.yaml
-     .\kubernetes-security\cr-monitoring.yaml
+
+     Манифест  ServiceAccount, ClusterRole, ClusterRoleBinding
+
+       .\kubernetes-security\sa-monitoring.yaml
+       .\kubernetes-security\rb-monitoring.yaml
+       .\kubernetes-security\cr-monitoring.yaml
     
  - Пункт 2
-    В манифест deployment.yaml добавлена строка
 
-      serviceAccountName: monitoring 
+     В манифест deployment.yaml добавлена строка
+
+       serviceAccountName: monitoring 
        
  - Пункт 3
-   Созданы манифесты ServiceAccount, Role, RoleBinding
-      .\kubernetes-security\sa-cd.yaml
-      .\kubernetes-security\rb-cd.yaml
-      .\kubernetes-security\r-cd.yaml
 
- - Пункт 4 
-    Создан файл kubeсonfig
+     Созданы манифесты ServiceAccount, Role, RoleBinding
 
- - Пункт 5 
-    kubectl create token cd --duration 24h > ~/.kube/token
-    Для постоянного токена используеться секрет cd-user-secret созданный при создание SA.
+       .\kubernetes-security\sa-cd.yaml
+       .\kubernetes-security\rb-cd.yaml
+       .\kubernetes-security\r-cd.yaml
+
+ - Пункт 4
+
+     Создан файл kubeсonfig
+
+ - Пункт 5
+
+     kubectl create token cd --duration 24h > ~/.kube/token
+     Для постоянного токена используеться секрет cd-user-secret созданный при создание SA.
 
  - Пункт 6 *
-    Добавили в configmap.yaml строки 
-            kubeapi:  https://192.168.49.2:8443
-            sa: /var/run/secrets/kubernetes.io/serviceaccount
+
+     Добавили в configmap.yaml строки 
+
+        kubeapi:  https://192.168.49.2:8443
+        sa: /var/run/secrets/kubernetes.io/serviceaccount
+        
      В файле deployment.yaml
+
           env:
           - name: KUBEAPI
             valueFrom:
@@ -63,23 +74,24 @@
 
 ## Как запустить проект:
  - Все пункты
-      minikube start
-      cd ./kubernetes-security
-      kubectl label nodes minikube homework=true
-      kubectl create -f namespace.yaml
-      kubectl apply -f deployment.yaml -f service.yaml -f ingress.yaml -f pvc.yaml -f configmap.yaml
-      kubectl apply -f sa-monitoring.yaml -f sa-cd.yaml -f 
-      kubectl apply -f cr-monitoring.yaml r-cd.yaml
-      kubectl apply -f rb-monitoring.yaml -f rb-cd.yaml
+
+       minikube start
+       cd ./kubernetes-security
+       kubectl label nodes minikube homework=true
+       kubectl create -f namespace.yaml
+       kubectl apply -f deployment.yaml -f service.yaml -f ingress.yaml -f pvc.yaml -f configmap.yaml
+       kubectl apply -f sa-monitoring.yaml -f sa-cd.yaml -f 
+       kubectl apply -f cr-monitoring.yaml r-cd.yaml
+       kubectl apply -f rb-monitoring.yaml -f rb-cd.yaml
       
-      применить ConfigFile
-      export KUBECONFIG=~/.kube/kubeconfig
-      Использовать контекст если их сделать несколько в моем случае контекст оставил 1
-      kubectl config use-context homework
-      Сгенерировать токен и применить в кофигфайле
-      kubectl config set-credentials cd --token=$(kubectl create token cd --duration 24h)
-      Использовать постоянный токен 
-      kubectl config set-credentials sa-user --token=$(kubectl get secret cd-user-secret -o jsonpath={.data.token} | base64 -d)
+     применить ConfigFile
+       export KUBECONFIG=~/.kube/kubeconfig
+     Использовать контекст если их сделать несколько в моем случае контекст оставил 1
+       kubectl config use-context homework
+     Сгенерировать токен и применить в кофигфайле
+       kubectl config set-credentials cd --token=$(kubectl create token cd --duration 24h)
+     Использовать постоянный токен 
+       kubectl config set-credentials sa-user --token=$(kubectl get secret cd-user-secret -o jsonpath={.data.token} | base64 -d)
     
 ## Как проверить работоспособность:
 
@@ -101,9 +113,9 @@
 
  - Пункт 3    
 
-       kubectl -n homework get serviceaccount/cd -o yaml
-       kubectl  get roles -n homework
-       kubectl  get rolebinding -n homework     
+      kubectl -n homework get serviceaccount/cd -o yaml
+      kubectl  get roles -n homework
+      kubectl  get rolebinding -n homework     
 
  - Пункт 4
 
@@ -119,17 +131,18 @@
        kubectl create token cd --duration 24h > ~/.kube/token
        ******
        kubectl config set-credentialscdr --token=$(kubectl get secret cd-user-secret -o jsonpath={.data.token} | base64 -d)
-   
-   при использование не временного токена появляеться сообщение
+
+     при использование не временного токена появляеться сообщение
 
         Warning: Use tokens from the TokenRequest API or manually created secret-based tokens instead of auto-generated secret-based tokens.
         User "cd" set.
 
  - Пункт 6 *
-      kubectl get ingress -n homework
-      vi /etc/hosts > "minikube ip" homework.otus (у меня: "192.168.49.2 homework.otus" )
-      minikube tunnel
-      curl http://homework.otus/conf/metric
+
+       kubectl get ingress -n homework
+       vi /etc/hosts > "minikube ip" homework.otus (у меня: "192.168.49.2 homework.otus" )
+       minikube tunnel
+       curl http://homework.otus/conf/metric
 
 ## PR checklist:
  - [x] Выставлен label с темой домашнего задания
