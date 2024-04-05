@@ -5,3 +5,6 @@ metadata:
   namespace: homework
 data:
   log_level: INFO
+  kubeapi:  https://192.168.49.2:8443
+  sa: /var/run/secrets/kubernetes.io/serviceaccount
+

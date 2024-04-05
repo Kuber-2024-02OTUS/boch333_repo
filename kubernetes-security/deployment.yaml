@@ -36,6 +36,17 @@ spec:
         ports:
         - name: websrv-port
           containerPort: 8080
+        env:
+          - name: KUBEAPI
+            valueFrom:
+              configMapKeyRef:
+                name: websrv-info
+                key: kubeapi
+          - name: SA
+            valueFrom:
+              configMapKeyRef:
+                name: websrv-info
+                key: sa
         volumeMounts:
         - mountPath: /homework
           name: workdir-pvs
@@ -54,12 +65,15 @@ spec:
               - sh
               - -c
               - |
+                export CACERT=${SA}/ca.crt
+                export TOKEN=$(cat ${SA}/token)
+                export NAMESPACE=$(cat ${SA}/namespace)
+                curl --cacert ${CACERT} --header """Authorization: Bearer ${TOKEN}""" -X GET ${KUBEAPI}/metrics > /homework/metrics
                 sed -i 's/SERVER_PORT = 8000/SERVER_PORT = 8080/' server.py 
-                cat server.py >  /homework/server_test.py 
-                sed -i '5a\        with open('"'"'/homework/conf/log_level'"'"') as fp:' server.py 
+                sed -i '5a\        with open('"'"'/homework/metrics'"'"') as fp:' server.py 
                 sed -i '6a\             file_data = fp.read()' server.py 
                 sed -i '10d' server.py 
-                sed -i '9a\        self.wfile.write(b'"'"'Open file log_level: '"'"' + file_data.encode())' server.py 
+                sed -i '9a\        self.wfile.write(b'"'"'Open file metrins.html: '"'"' + file_data.encode())' server.py 
           preStop:
             exec:
               command: ["sh", "-c", "rm -R /homework"]
@@ -69,12 +83,10 @@ spec:
         command:
         - sh
         - -c
-        - cat > /init/server_test.py
+        - |
+          cat > /init/metrics.html
         volumeMounts:
         - mountPath: /init
           name: workdir-pvs
       nodeSelector:
         homework: "true"
-
-
-

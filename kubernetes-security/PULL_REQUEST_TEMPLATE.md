@@ -52,15 +52,12 @@
     
 ## Как проверить работоспособность:
 
- - Пункт 1, Пункт 3    
-          kubectl  get roles
-          kubectl  get roles -n homework
-          kubectl  get clusterroles
-          kubectl  get rolebinding
-          kubectl  get rolebinding -n homework
-          kubectl  get clusterrolebinding
-          kubectl  get rolebinding -n homework
+ - Пункт 1 
 
+      kubectl get serviceaccount/monitoring -o yaml
+      kubectl  get clusterroles
+      kubectl  get clusterrolebinding
+ 
  - Пункт 2
 
       kubectl describe pods homework-deployment-6bcc5f5f7f-5sjkh
@@ -71,24 +68,45 @@
         Service Account:  monitoring
         ...
 
+ - Пункт 3    
+
+      kubectl -n homework get serviceaccount/cd -o yaml
+      kubectl  get roles -n homework
+      kubectl  get rolebinding -n homework     
+
  - Пункт 4
-      kubectl config view
-      export KUBECONFIG=~/.kube/kubeconfig
-      kubectl config --kubeconfig=kubeconfig view
-      kubectl config get-contexts
-      kubectl config current-context
+
       kubectl config view
 
+      export KUBECONFIG=~/.kube/kubeconfig
+
+      kubectl config --kubeconfig=kubeconfig view
+
+      kubectl config get-contexts
+
+      kubectl config current-context
+
+      kubectl config view
+
+ - Пункт 5
+
+      kubectl create token cd --duration 24h > ~/.kube/token
+
+      ******
+
       kubectl config set-credentialscdr --token=$(kubectl get secret cd-user-secret -o jsonpath={.data.token} | base64 -d)
+
       при использование не временного токена появляеться сообщение
 
         Warning: Use tokens from the TokenRequest API or manually created secret-based tokens instead of auto-generated secret-based tokens.
         User "cd" set.
 
-      провести операции доступные админу.
+ - Пункт 6 *
+
+     
+      
 
 
- - Пункт 5
 
 ## PR checklist:
  - [x] Выставлен label с темой домашнего задания
