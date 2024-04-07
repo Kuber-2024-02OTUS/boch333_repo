@@ -12,11 +12,10 @@ spec:
   - host: "homework.otus"
     http:
       paths:
-      - path: "/conf/file"
+      - path: "/conf/metric"
         pathType: Prefix
         backend:
           service:
             name: websrv-service
             port:
               number: 80
-
