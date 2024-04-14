@@ -15,6 +15,27 @@ nameOverride: ""
 fullnameOverride: ""
 namespace: "homework"
 
+configMap:
+  enabled: true
+  data:  {
+    log_level: INFO,
+    kubeapi:  https://192.168.49.2:8443,
+    sa: /var/run/secrets/kubernetes.io/serviceaccount
+  }
+
+storageClass:
+  enabled: true
+  provisioner: k8s.io/minikube-hostpath
+  reclaimPolicy: Retain
+  volumeBindingMode: Immediate
+
+persistence:
+  enabled: true
+  storageClass: "-"
+  accessMode: ReadWriteOnce
+  size: 2Mi
+
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
@@ -51,15 +72,17 @@ service:
 
 ingress:
   enabled: false
-  className: ""
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  className: nginx
+  annotations: {
+        nginx.ingress.kubernetes.io/use-regex: "true",
+        nginx.ingress.kubernetes.io/rewrite-target: /$1
+  }
   hosts:
-    - host: chart-example.local
+    - host: "homework.otus"
       paths:
-        - path: /
-          pathType: ImplementationSpecific
+        - path: "/conf/metric"
+          pathType: Prefix
+    
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
