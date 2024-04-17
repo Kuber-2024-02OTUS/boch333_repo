@@ -33,7 +33,7 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ $fullName }}
+                name: {{ include "websrv.fullname" . }}
                 port:
                   number: {{ $svcPort }}
 {{- end }}
