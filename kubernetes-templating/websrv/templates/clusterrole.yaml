@@ -5,10 +5,14 @@ kind: ClusterRole
 metadata:
   name: {{ $fullName }}-cr
 rules:
+    {{- range .Values.clusterRole.rules }}
     - nonResourceURLs:
-          {{- .Values.clusterRole.nonResourceURLs}}
-      {{- with .Values.clusterRole.verbs }}
+          {{- range .nonResourceURLs }}
+          - {{ . | quote }}
+          {{- end }}
       verbs:
-      {{- toYaml . | nindent 4 }}
-      {{- end }}
+          {{- range .verbs }}
+          - {{ . | quote }}
+          {{- end }}
+    {{- end }}         
 {{- end }}

@@ -7,7 +7,7 @@ metadata:
   namespace: {{.Values.namespace}}
   labels:
     {{- include "websrv.labels" . | nindent 4 }}
-{{- with .Values.configmap.data }}
+{{- with .Values.configMap.data }}
 data:
     {{- toYaml . | nindent 4 }}
 {{- end }}
