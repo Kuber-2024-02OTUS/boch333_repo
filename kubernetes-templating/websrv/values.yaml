@@ -15,7 +15,7 @@ resources:
 
 probe:
   ivenessProbe: false
-  readinessProbe: false
+  readinessProbe: true
 
 image:
   repository: roflmaoinmysoul/otus
@@ -29,12 +29,15 @@ namespace: "homework"
 
 configMap:
   enabled: true
+  keyName:
+    key1: log_level
+    key2: kubeapi
+    key3: sa
   data:
     log_level: INFO
-    kubeapi:  kubeapi
-    sa: sa
+    kubeapi: https://192.168.49.2:8443
+    sa: /var/run/secrets/kubernetes.io/serviceaccount
   
-
 storageClass:
   enabled: true
   provisioner: k8s.io/minikube-hostpath
@@ -43,7 +46,7 @@ storageClass:
 
 persistence:
   enabled: true
-  storageClass: true
+  storageClass: false
   accessMode: ReadWriteOnce
   size: 2Mi
 
@@ -54,7 +57,7 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: "monitoring"
+  name: monitoring
 
 clusterRole:
   name: "monitoring"

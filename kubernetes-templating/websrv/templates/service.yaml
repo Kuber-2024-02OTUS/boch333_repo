@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "websrv.fullname" . }}
+  name: {{ include "websrv.fullname" . }}-service
   namespace: {{.Values.namespace}}
   labels:
     {{- include "websrv.labels" . | nindent 4 }}
@@ -9,7 +9,7 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: websrv-port
       protocol: TCP
       name: http
   selector:
