@@ -1,6 +1,10 @@
 # Default values for websrv.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+redis:
+  global:
+    redis:
+      password: ""
 
 replicaCount: 3
 strategy:
