@@ -1,0 +1,42 @@
+repositories:
+
+- name: bitnami
+  url: https://charts.bitnami.com/bitnami
+
+environments:
+  dev:
+  prod:
+
+releases:
+- name: kafka-{{ .Environment.Name }}
+  namespace: {{ .Environment.Name }}
+  createNamespace: true
+  labels:
+      app: kafka
+  chart: bitnami/kafka
+  set:
+  - name: broker.replicaCount
+    value: 5
+  - name: image.tag
+    value: 3.5.2
+  - name: listeners.client.protocol
+    value: SASL_PLAINTEXT
+  - name: listeners.interbroker.protocol
+    value: SASL_PLAINTEXT
+- name: kafka-{{ .Environment.Name }}
+  namespace: {{ .Environment.Name }}
+  createNamespace: true
+  labels:
+      app: kafka
+  chart: bitnami/kafka
+  set:
+  - name: broker.replicaCount
+    value: 1
+  - name: controller.replicaCount
+    value: 1
+  - name: image.tag
+    value: latest
+  - name: listeners.client.protocol
+    value: PLAINTEXT
+  - name: listeners.interbroker.protocol
+    value: PLAINTEXT
