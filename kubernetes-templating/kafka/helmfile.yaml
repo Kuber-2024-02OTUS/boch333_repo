@@ -8,11 +8,12 @@ environments:
   prod:
 
 releases:
-- name: kafka-{{ .Environment.Name }}
+- name: kafka-prod
   namespace: {{ .Environment.Name }}
   createNamespace: true
+  installed: {{ eq .Environment.Name "prod" | toYaml }}
   labels:
-      app: kafka
+      app: kafka-{{ .Environment.Name }}
   chart: bitnami/kafka
   set:
   - name: broker.replicaCount
@@ -23,11 +24,12 @@ releases:
     value: SASL_PLAINTEXT
   - name: listeners.interbroker.protocol
     value: SASL_PLAINTEXT
-- name: kafka-{{ .Environment.Name }}
+- name: kafka-dev
   namespace: {{ .Environment.Name }}
   createNamespace: true
+  installed: {{ eq .Environment.Name "dev" | toYaml }}
   labels:
-      app: kafka
+      app: kafka-{{ .Environment.Name }}
   chart: bitnami/kafka
   set:
   - name: broker.replicaCount
