@@ -1,0 +1,18 @@
+{{- if .Values.serviceAccount.create -}}
+{{- $fullName := include "websrv.serviceAccountName" . -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ $fullName }}-cr
+rules:
+    {{- range .Values.clusterRole.rules }}
+    - nonResourceURLs:
+          {{- range .nonResourceURLs }}
+          - {{ . | quote }}
+          {{- end }}
+      verbs:
+          {{- range .verbs }}
+          - {{ . | quote }}
+          {{- end }}
+    {{- end }}         
+{{- end }}

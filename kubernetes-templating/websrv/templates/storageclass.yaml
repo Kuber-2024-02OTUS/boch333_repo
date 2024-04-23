@@ -1,0 +1,12 @@
+{{- if .Values.storageClass.enabled -}}
+{{- $fullName := include "websrv.fullname" . -}}
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: {{ $fullName }}-sc
+  labels:
+    {{- include "websrv.labels" . | nindent 4 }}
+provisioner: {{ .Values.storageClass.provisioner }}
+reclaimPolicy: {{ .Values.storageClass.reclaimPolicy }}
+volumeBindingMode: {{ .Values.storageClass.volumeBindingMode }}
+{{- end }}
