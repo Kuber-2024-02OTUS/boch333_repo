@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+  namespace: homework
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      volumes:
+      - name: nginx-default-config-volume
+        configMap:
+          name: nginx-default-config-homework
+      containers:
+      - name: exporter
+        image: "nginx/nginx-prometheus-exporter:1.1.0"
+        args: ["-nginx.scrape-uri=http://localhost:8000/stub_status"]
+        ports:
+        - containerPort: 9113
+          name: metrics
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+      - name: nginx
+        image: nginx:1.14.2
+        env:
+        - name: NGINX_PORT
+          value: "8000"
+        volumeMounts:
+          - name: nginx-default-config-volume
+            mountPath: /etc/nginx/conf.d/
+        ports:
+          - containerPort: 8000
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"

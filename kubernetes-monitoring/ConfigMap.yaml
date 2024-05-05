@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: homework
+  name: nginx-default-config-homework
+data:
+  default.conf: |
+    server {
+        listen 8000;
+        server_name _;
+        location /stub_status {
+            stub_status on;
+            allow 127.0.0.1;
+        }
+        location / {
+            try_files $uri $uri/ /index.html;
+            root /homework;
+            index  index.html index.htm;
+        }
+    }
