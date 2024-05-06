@@ -1,4 +1,3 @@
-{{- if .Values.configMap.enabled -}}
 {{- $fullName := include "monitoring.fullname" . -}}
 apiVersion: v1
 kind: ConfigMap
@@ -10,5 +9,4 @@ metadata:
 {{- with .Values.configMap.data }}
 data:
     {{- toYaml . | nindent 4 }}
-{{- end }}
 {{- end }}

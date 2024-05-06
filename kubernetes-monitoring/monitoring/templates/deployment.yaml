@@ -27,7 +27,7 @@ spec:
       containers:
         - name: nginx
           image: "{{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: {{ .Values.nginx.image.pullPolicy }}
          env:
         - name: NGINX_PORT
           value: {{ .Values.service.http.targetPort }}
@@ -49,8 +49,8 @@ spec:
             {{- toYaml .Values.nginx.resources | nindent 12 }}
         - name: exporter
           image: "{{ .Values.exporter.image.repository }}:{{ .Values.exporter.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          args: {{ .Values.exporter.image.Args }}
+          imagePullPolicy: {{ .Values.exporter.image.pullPolicy }}
+          args: {{ .Values.exporter.args }}
           ports:
             - name: metrics
               containerPort: {{ .Values.service.metrics.targetPort }}
