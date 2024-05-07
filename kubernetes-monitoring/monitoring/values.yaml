@@ -65,7 +65,7 @@ service:
     targetPort: 9113
 
 ingress:
-  enabled: false
+  enabled: true
   className: nginx
   annotations: {
     kubernetes.io/ingress.allow-http: "true",
@@ -73,12 +73,11 @@ ingress:
   }
   hosts:
     - host: "homework.otus"
-      http:
-        paths:
-        - path: /homepage()(.*)
+      paths:
+        - path: /homepage
           pathType: Prefix
           portNumber: 80
-        - path: /(metrics)(.*)
+        - path: /metrics
           pathType: Prefix
           portNumber: 9113      
   tls: []

@@ -11,14 +11,14 @@ spec:
   - host: "homework.otus"
     http:
       paths:
-      - path: /homepage()(.*)
+      - path: /homepage
         pathType: Prefix
         backend:
           service:
             name: nginx-service
             port:
               number: 80
-      - path: /(metrics)(.*)
+      - path: /metrics
         pathType: Prefix
         backend:
           service:

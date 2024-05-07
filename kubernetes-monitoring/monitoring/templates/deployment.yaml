@@ -28,12 +28,12 @@ spec:
         - name: nginx
           image: "{{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.nginx.image.pullPolicy }}
-         env:
-        - name: NGINX_PORT
-          value: {{ .Values.service.http.targetPort }}
-        volumeMounts:
-          - name: nginx-config-volume
-            mountPath: /etc/nginx/conf.d/
+          env:
+          - name: NGINX_PORT
+            value: {{ .Values.service.http.targetPort }}
+          volumeMounts:
+            - name: nginx-config-volume
+              mountPath: /etc/nginx/conf.d/
           ports:
             - name: http
               containerPort: {{ .Values.service.http.targetPort }}
