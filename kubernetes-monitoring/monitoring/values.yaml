@@ -1,9 +1,7 @@
-# Default values for monitoring.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+prometheus-operator:
+  enable: true
 
 replicaCount: 1
-
 nginx:
   image:
     repository: nginx
@@ -16,12 +14,10 @@ nginx:
     limits:
       memory: "128Mi"
       cpu: "500m"
-
 exporter:
   image:
     repository: nginx/nginx-prometheus-exporter
     pullPolicy: IfNotPresent
-    # Overrides the image tag whose default is the chart appVersion.
     tag: "1.1.0"
   resources:
     requests:
@@ -31,11 +27,9 @@ exporter:
       memory: "128Mi"
       cpu: "500m"
   args: ["-nginx.scrape-uri=http://localhost:8000/stub_status"]
-
 nameOverride: ""
 fullnameOverride: ""
 namespace: "homework"
-
 configMap:
     data:
       default.conf: |
@@ -52,9 +46,7 @@ configMap:
                 index  index.html index.htm;
               }
           }
-
 podAnnotations: {}
-
 service:
   type: ClusterIP
   http:
@@ -63,7 +55,6 @@ service:
   metrics:
     port: 9113  
     targetPort: 9113
-
 ingress:
   enabled: true
   className: nginx
@@ -81,14 +72,8 @@ ingress:
           pathType: Prefix
           portNumber: 9113      
   tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
-
 nodeSelector: { 
   homework: "true"
 }
-
 tolerations: []
-
 affinity: {}
