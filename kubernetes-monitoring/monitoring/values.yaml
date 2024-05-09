@@ -1,5 +1,6 @@
 prometheus-operator:
   enable: true
+  namespace: "homework"
 
 replicaCount: 1
 nginx:
