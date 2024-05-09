@@ -30,21 +30,20 @@ spec:
           imagePullPolicy: {{ .Values.nginx.image.pullPolicy }}
           env:
           - name: NGINX_PORT
-            value: {{ .Values.service.http.targetPort }}
+            value: "{{ .Values.service.http.targetPort }}"
           volumeMounts:
             - name: nginx-config-volume
               mountPath: /etc/nginx/conf.d/
           ports:
-            - name: http
-              containerPort: {{ .Values.service.http.targetPort }}
+          - containerPort: {{ .Values.service.http.targetPort }}
           livenessProbe:
             httpGet:
-              path: /
-              port: http
+              path: /stub_status
+              port: 8000
           readinessProbe:
             httpGet:
-              path: /
-              port: http
+              path: /stub_status
+              port: 8000
           resources:
             {{- toYaml .Values.nginx.resources | nindent 12 }}
         - name: exporter
