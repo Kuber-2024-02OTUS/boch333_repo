@@ -1,5 +1,7 @@
 # Репозиторий для выполнения домашних заданий курса "Инфраструктурная платформа на основе Kubernetes-2024-02" 
+ДЗ#9 - Сервисы централизованного логирования для Kubernetes
 
+cd ./kubernetes-logging
 Получаем access_key к service_account
 
 access_key:
