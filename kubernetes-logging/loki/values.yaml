@@ -73,8 +73,8 @@ loki:
       admin: homework-loki-admin
     s3:
       endpoint: s3.yandexcloud.net
-      accessKeyId: YCAJESZyx2bE7prCVYjO1o_fZ
-      secretAccessKey: YCNkyipKQw5x68XRN7hHOyDqLaY67p76702oN9il
+      accessKeyId: $accessKeyId
+      secretAccessKey: $secretAccessKey
       s3ForcePathStyle: false
       insecure: false
   schemaConfig:
