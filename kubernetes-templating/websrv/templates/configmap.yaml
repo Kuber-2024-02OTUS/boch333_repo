@@ -1,0 +1,14 @@
+{{- if .Values.configMap.enabled -}}
+{{- $fullName := include "websrv.fullname" . -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $fullName }}-info
+  namespace: {{.Values.namespace}}
+  labels:
+    {{- include "websrv.labels" . | nindent 4 }}
+{{- with .Values.configMap.data }}
+data:
+    {{- toYaml . | nindent 4 }}
+{{- end }}
+{{- end }}

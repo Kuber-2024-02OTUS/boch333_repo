@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: homework
+  name: homework-deployment
+spec:
+  selector:
+    matchLabels:
+      app: homework-websrv
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: homework-websrv
+    spec:
+      dnsPolicy: Default
+      volumes:
+      - name: workdir
+        emptyDir: {}
+      containers:
+      - name: websrv
+        image: roflmaoinmysoul/otus:v2.0
+        resources:
+          limits:
+            memory: "40Mi"
+            cpu: "100m"
+        ports:
+        - name: websrv-port
+          containerPort: 8080
+        volumeMounts:
+        - mountPath: /tmp/homework
+          name: workdir
+        readinessProbe:
+          httpGet:
+            path: /index.html
+            port: websrv-port
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        lifecycle:
+          postStart:
+            exec:
+              command: ["sh", "-c", "sed -i 's/SERVER_PORT = 8000/SERVER_PORT = 8080/' server.py"]
+          preStop:
+            exec:
+              command: ["sh", "-c", "rm -R /tmp/homework"]
+      initContainers:
+      - name: install
+        image: busybox:1.28
+        command:
+        - wget
+        - "-O"
+        - "/init/index.html"
+        - "http://info.cern.ch"
+        volumeMounts:
+        - mountPath: /init
+          name: workdir
+      nodeSelector:
+        homework: "true"
+
+
+

@@ -1,0 +1,80 @@
+prometheus-operator:
+  enable: true
+  namespace: "homework"
+
+replicaCount: 1
+nginx:
+  image:
+    repository: nginx
+    pullPolicy: IfNotPresent
+    tag: "1.14.2"
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "250m"
+    limits:
+      memory: "128Mi"
+      cpu: "500m"
+exporter:
+  image:
+    repository: nginx/nginx-prometheus-exporter
+    pullPolicy: IfNotPresent
+    tag: "1.1.0"
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "250m"
+    limits:
+      memory: "128Mi"
+      cpu: "500m"
+  args: ["-nginx.scrape-uri=http://localhost:8000/stub_status"]
+nameOverride: ""
+fullnameOverride: ""
+namespace: "homework"
+configMap:
+    data:
+      default.conf: |
+        server {
+            listen 8000;
+            server_name _;
+            location /stub_status {
+                stub_status on;
+                allow 127.0.0.1;
+            }
+            location / {
+                try_files $uri $uri/ /index.html;
+                root /homework;
+                index  index.html index.htm;
+              }
+          }
+podAnnotations: {}
+service:
+  type: ClusterIP
+  http:
+    port: 80
+    targetPort: 8000
+  metrics:
+    port: 9113  
+    targetPort: 9113
+ingress:
+  enabled: true
+  className: nginx
+  annotations: {
+    kubernetes.io/ingress.allow-http: "true",
+    nginx.ingress.kubernetes.io/rewrite-target: /$1$2
+  }
+  hosts:
+    - host: "homework.otus"
+      paths:
+        - path: /homepage
+          pathType: Prefix
+          portNumber: 80
+        - path: /metrics
+          pathType: Prefix
+          portNumber: 9113      
+  tls: []
+nodeSelector: { 
+  homework: "true"
+}
+tolerations: []
+affinity: {}

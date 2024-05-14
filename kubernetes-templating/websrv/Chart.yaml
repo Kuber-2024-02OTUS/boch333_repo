@@ -1,0 +1,12 @@
+apiVersion: v2
+name: websrv
+description: A Helm chart for Kubernetes
+
+type: application
+version: 0.1.1
+appVersion: "1.16.1"
+
+dependencies:
+- name: redis
+  version: 19.1.2
+  repository: https://charts.bitnami.com/bitnami

@@ -1,0 +1,119 @@
+# Default values for websrv.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+redis:
+  global:
+    redis:
+      password: ""
+
+replicaCount: 3
+strategy:
+  type: RollingUpdate
+  maxUnavailable: 1
+  maxSurge: 0
+
+resources:
+    limits:
+      cpu: "100m"
+      memory: "40Mi"
+
+probe:
+  ivenessProbe: false
+  readinessProbe: true
+
+image:
+  repository: roflmaoinmysoul/otus
+  pullPolicy: IfNotPresent
+  tag: "v2.0"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+namespace: "homework"
+
+configMap:
+  enabled: true
+  keyName:
+    key1: log_level
+    key2: kubeapi
+    key3: sa
+  data:
+    log_level: INFO
+    kubeapi: https://192.168.49.2:8443
+    sa: /var/run/secrets/kubernetes.io/serviceaccount
+  
+storageClass:
+  enabled: true
+  provisioner: k8s.io/minikube-hostpath
+  reclaimPolicy: Retain
+  volumeBindingMode: Immediate
+
+persistence:
+  enabled: true
+  storageClass: false
+  accessMode: ReadWriteOnce
+  size: 2Mi
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: monitoring
+
+clusterRole:
+  name: "monitoring"
+  rules:
+      - nonResourceURLs:
+            - "/metrics"
+        verbs:
+            - get
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+dnsPolicy: Default
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations: {
+        nginx.ingress.kubernetes.io/use-regex: "true",
+        nginx.ingress.kubernetes.io/rewrite-target: /$1
+  }
+
+  hosts: 
+    - host: "homework.otus"
+      paths:
+        - path: "/conf/metric"
+          pathType: Prefix
+
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+
+nodeSelector: { 
+  homework: "true"
+}
+
+tolerations: []
+
+affinity: {}
