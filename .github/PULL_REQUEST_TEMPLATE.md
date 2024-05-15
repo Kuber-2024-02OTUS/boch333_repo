@@ -51,6 +51,7 @@
       kubectl apply -f .\kubernetes-networks\ingress_c.yaml
     
 ## Как проверить работоспособность:
+
  - Пункт 1
       kubectl get all -n homework
  - Пункт 2

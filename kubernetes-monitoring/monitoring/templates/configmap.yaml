@@ -1,0 +1,12 @@
+{{- $fullName := include "monitoring.fullname" . -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $fullName }}-config
+  namespace: {{.Values.namespace}}
+  labels:
+    {{- include "monitoring.labels" . | nindent 4 }}
+{{- with .Values.configMap.data }}
+data:
+    {{- toYaml . | nindent 4 }}
+{{- end }}

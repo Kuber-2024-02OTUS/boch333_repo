@@ -1,0 +1,69 @@
+{{- $fullName := include "monitoring.fullname" . -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{.Values.namespace}}
+  name: {{ include "monitoring.fullname" . }}
+  labels:
+    {{- include "monitoring.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "monitoring.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "monitoring.selectorLabels" . | nindent 8 }}
+    spec:
+      volumes:
+      - name: nginx-config-volume
+        configMap:
+          name: {{ $fullName }}-config    
+      containers:
+        - name: nginx
+          image: "{{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.nginx.image.pullPolicy }}
+          env:
+          - name: NGINX_PORT
+            value: "{{ .Values.service.http.targetPort }}"
+          volumeMounts:
+            - name: nginx-config-volume
+              mountPath: /etc/nginx/conf.d/
+          ports:
+          - containerPort: {{ .Values.service.http.targetPort }}
+          livenessProbe:
+            httpGet:
+              path: /stub_status
+              port: 8000
+          readinessProbe:
+            httpGet:
+              path: /stub_status
+              port: 8000
+          resources:
+            {{- toYaml .Values.nginx.resources | nindent 12 }}
+        - name: exporter
+          image: "{{ .Values.exporter.image.repository }}:{{ .Values.exporter.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.exporter.image.pullPolicy }}
+          args: {{ .Values.exporter.args }}
+          ports:
+            - name: metrics
+              containerPort: {{ .Values.service.metrics.targetPort }}
+          resources:
+            {{- toYaml .Values.exporter.resources | nindent 12 }}        
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

@@ -3,4 +3,4 @@ kind: Namespace
 metadata:
   name: {{.Values.namespace}}
   labels:
-    {{- include "websrv.labels" . | nindent 4 }}
+    {{- include "monitoring.labels" . | nindent 4 }}
