@@ -3,9 +3,9 @@ repositories:
   url: https://grafana.github.io/helm-charts
 
 releases:
-- name: grafana
+- name: loki
   namespace: homework
-  chart: grafana/grafana
-  version: 7.3.11
+  chart: grafana/loki
+  version: 6.5.0
   values: 
   - values.yaml
