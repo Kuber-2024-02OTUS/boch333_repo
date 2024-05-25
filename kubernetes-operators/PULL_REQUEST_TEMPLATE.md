@@ -19,7 +19,7 @@
 
 ## Как запустить проект:
 minikube start 
-cd ./kubernetes-operators/deploy
+cd ./kubernetes-operators/mysql-deploy
 kubectl apply -f CustomResourceMySql.yaml -f CustomResourceDefinition.yaml -f ServiceAccount.yaml -f ClusterRoleFull.yaml -f ClusterRoleMin.yaml -f ClusterRoleBinding.yaml -f DeploymentOperator.yaml 
 
 в зависимости от задания запускаем используя образы oflmaoinmysoul/mysql-operator:1.0.0 или homework/mysql-operator-py:latest и соответственно с  ролями 
