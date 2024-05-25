@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 apiVersion: v1
 kind: Pod
 metadata:
@@ -13,3 +14,20 @@ spec:
       command: ['wget']
       args: ['{{ include "monitoring.fullname" . }}:{{ .Values.service.port }}']
   restartPolicy: Never
+=======
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "monitoring.fullname" . }}-test-connection"
+  labels:
+    {{- include "monitoring.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "monitoring.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
+>>>>>>> main
