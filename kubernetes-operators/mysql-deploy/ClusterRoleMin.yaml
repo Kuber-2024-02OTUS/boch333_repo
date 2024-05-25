@@ -1,0 +1,17 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: min-crd-operator
+rules:
+- apiGroups: ["otus.homework"]
+  resources: ["mysqls"]
+  verbs: ["*"]
+- apiGroups: [""]
+  resources: ["services","persistentvolumes","persistentvolumeclaims","events"]
+  verbs: ["*"]
+- apiGroups: ["apps","extensions"]
+  resources: ["deployments","deployments/status"]
+  verbs: ["*"]
+- apiGroups: ["events.k8s.io"]
+  resources: ["events"]
+  verbs: ["*"]
