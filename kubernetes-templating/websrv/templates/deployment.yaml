@@ -1,0 +1,128 @@
+{{- $fullName := include "websrv.fullname" . -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{.Values.namespace}}
+  name: {{ include "websrv.fullname" . }}
+  labels:
+    {{- include "websrv.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "websrv.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: {{ .Values.strategy.type }}
+    rollingUpdate:
+      maxUnavailable: {{ .Values.strategy.maxUnavailable }}
+      maxSurge: {{ .Values.strategy.maxSurge }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "websrv.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      dnsPolicy: {{ .Values.dnsPolicy  }}
+      serviceAccountName: {{ include "websrv.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+      - name: workdir-pvc
+        persistentVolumeClaim:
+          claimName: {{ $fullName }}-pvc 
+      - name: workdir-cm
+        configMap:
+          name: {{ $fullName }}-info  
+      containers:
+      - name: {{ .Chart.Name }}
+        securityContext:
+          {{- toYaml .Values.securityContext | nindent 12 }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}      
+        ports:
+        - name: websrv-port
+          containerPort: 8080
+          protocol: TCP
+        env:
+          - name: KUBEAPI
+            valueFrom:
+              configMapKeyRef:
+                name: {{ $fullName }}-info
+                key: {{ .Values.configMap.keyName.key2 }}
+          - name: SA
+            valueFrom:
+              configMapKeyRef:
+                name: {{ $fullName }}-info
+                key: {{ .Values.configMap.keyName.key3 }}
+        volumeMounts:
+        - mountPath: /homework
+          name: workdir-pvc
+        - mountPath: /homework/conf
+          name: workdir-cm
+        {{- if .Values.probe.ivenessProbe }}
+        livenessProbe:
+          httpGet:
+            path: /index.html
+            port: websrv-port
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        {{- end }}
+        {{- if .Values.probe.readinessProbe }}
+        readinessProbe:
+          httpGet:
+            path: /index.html
+            port: websrv-port
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        {{- end }}
+        lifecycle:
+          postStart:
+            exec:
+              command: 
+              - sh
+              - -c
+              - |
+                 sed -i 's/SERVER_PORT = 8000/SERVER_PORT = 8080/' server.py 
+                 sed -i '5a\        with open('"'"'/homework/metrics.html'"'"') as fp:' server.py 
+                 sed -i '6a\             file_data = fp.read()' server.py 
+                 sed -i '10d' server.py 
+                 sed -i '9a\        self.wfile.write(b'"'"'Open file metrins.html: '"'"' + file_data.encode())' server.py 
+                 export CACERT=${SA}/ca.crt
+                 export TOKEN=$(cat ${SA}/token)
+                 export NAMESPACE=$(cat ${SA}/namespace)
+                 curl --cacert ${CACERT} --header """Authorization: Bearer ${TOKEN}""" -X GET ${KUBEAPI}/metrics > /homework/metrics.html
+          preStop:
+            exec:
+              command: ["sh", "-c", "rm -R /homework"]          
+      initContainers:
+      - name: install
+        image: busybox:1.28
+        command:
+        - sh
+        - -c
+        - |
+          cat > /init/metrics.html
+        volumeMounts:
+        - mountPath: /init
+          name: workdir-pvc      
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

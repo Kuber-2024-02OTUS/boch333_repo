@@ -1,0 +1,21 @@
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority: /home/admin/.minikube/ca.crt
+    server: https://192.168.49.2:8443
+  name: minikube
+contexts:
+- context:
+    cluster: minikube
+    namespace: homework
+    user: cd
+  name: homework
+current-context: homework
+kind: Config
+preferences: {}  
+users:
+- name: cd
+  user:
+    as-user-extra: {}
+    token:  $(TOKEN)
+

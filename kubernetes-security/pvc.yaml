@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: websrv-pvc
+  namespace: homework
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard # storageClassName: homework
+  resources:
+    requests:
+      storage: 2Mi
