@@ -13,9 +13,6 @@ spec:
     helm:
       valueFiles:
       - values.yaml
-      valuesObject:
-        namespace: argocd
-        replicaCount: 3
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
