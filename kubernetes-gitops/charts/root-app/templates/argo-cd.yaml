@@ -7,9 +7,9 @@ metadata:
 spec:
   project: otus
   source:
-    repoURL: https://github.com/Kuber-2024-02OTUS/boch333_repo.git
-    path: kubernetes-gitops/charts/root-app
-    targetRevision: kubernetes-gitops
+    repoURL: "https://github.com/Kuber-2024-02OTUS/boch333_repo.git"
+    path: "kubernetes-gitops/charts/root-app"
+    targetRevision: "kubernetes-gitops"
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
