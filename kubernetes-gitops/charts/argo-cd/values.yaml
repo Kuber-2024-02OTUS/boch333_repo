@@ -65,8 +65,6 @@ argo-cd:
               - infra
       
   server:
-    extraArgs:
-        - --insecure
     tolerations:
     - key: "node-role"
       operator: "Equal"
