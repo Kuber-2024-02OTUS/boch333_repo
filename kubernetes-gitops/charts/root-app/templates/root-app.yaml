@@ -9,10 +9,10 @@ spec:
   source:
     repoURL: https://github.com/Kuber-2024-02OTUS/boch333_repo.git
     path: /kubernetes-gitops/charts/root-app
-    targetRevision: HEAD
+    targetRevision: kubernetes-gitops
   destination:
     server: https://kubernetes.default.svc
-    namespace: homework
+    namespace: argocd
   syncPolicy:
     automated:
       selfHeal: true
