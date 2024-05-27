@@ -1,5 +1,3 @@
-namespaceOverride: "argocd"
-
 global:
   tolerations:
   - key: "node-role"
