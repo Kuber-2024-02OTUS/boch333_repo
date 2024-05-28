@@ -7,7 +7,7 @@ loki:
     type: s3
     bucketNames:
       chunks: homework-loki-chunks
-      ruler: homework-loki-ruler
+      ruler: homework-loki-ruler  
       admin: homework-loki-admin
     s3:
       endpoint: s3.yandexcloud.net
