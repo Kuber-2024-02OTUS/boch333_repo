@@ -12,7 +12,10 @@ spec:
     targetRevision: "kubernetes-gitops"
     helm:
       valueFiles:
-      - values.yaml
+      - values.yaml      
+      valuesObject:
+        namespace: homeworkhelm
+        replicaCount: 2
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
