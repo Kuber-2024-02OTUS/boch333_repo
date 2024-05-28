@@ -11,7 +11,7 @@ spec:
     chart: kubernetes-templating/websrv
     targetRevision: kubernetes-gitops
     helm:     
-      values:|
+      values: |
         namespace: homeworkhelm
         replicaCount: 2
       valueFiles:
