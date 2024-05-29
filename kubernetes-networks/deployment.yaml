@@ -58,8 +58,8 @@ spec:
         volumeMounts:
         - mountPath: /init
           name: workdir
-        nodeSelector:
-          homework: "true"
+      nodeSelector:
+        homework: "true"
 
 
 
