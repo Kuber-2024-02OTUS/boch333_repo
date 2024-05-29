@@ -9,7 +9,6 @@ spec:
   source:
     repoURL: "https://github.com/Kuber-2024-02OTUS/boch333_repo.git"
     path: kubernetes-templating
-    chart: websrv
     targetRevision: kubernetes-gitops
     helm:     
       values: |
