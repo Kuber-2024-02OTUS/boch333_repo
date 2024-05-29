@@ -8,7 +8,7 @@ spec:
   project: otus
   source:
     repoURL: "https://github.com/Kuber-2024-02OTUS/boch333_repo.git"
-    path: "kubernetes-templating/websrv"
+    path: "websrv"
     targetRevision: "kubernetes-templating"
     helm: 
       version: v3.12.0   
