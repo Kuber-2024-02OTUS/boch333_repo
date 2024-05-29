@@ -8,8 +8,8 @@ spec:
   project: otus
   source:
     repoURL: "https://github.com/Kuber-2024-02OTUS/boch333_repo.git"
-    path: kubernetes-templating/websrv/
-    targetRevision: kubernetes-gitops
+    path: kubernetes-templating/websrv
+    targetRevision: HEAD
     helm:     
       values: |
         namespace: HomeworkHelm
