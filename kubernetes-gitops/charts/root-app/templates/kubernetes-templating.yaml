@@ -14,9 +14,6 @@ spec:
       values: |
         namespace: homeworkhelm
         replicaCount: 1
-        redis:
-          architecture: standalone
-          resourcesPreset: nano
       valueFiles:
       - values.yaml 
   destination:
