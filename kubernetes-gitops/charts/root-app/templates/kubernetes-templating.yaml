@@ -11,7 +11,7 @@ spec:
     path: kubernetes-templating/websrv
     targetRevision: kubernetes-gitops
     helm: 
-      version: v3    
+      version: v3.12.0   
       values: |
         namespace: homeworkhelm
         replicaCount: 1
