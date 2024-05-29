@@ -13,7 +13,7 @@ spec:
     targetRevision: kubernetes-gitops
     helm:     
       values: |
-        namespace: HomeworkHelm
+        namespace: homeworkhelm
         replicaCount: 1
       valueFiles:
       - values.yaml 
