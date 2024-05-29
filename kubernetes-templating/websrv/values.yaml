@@ -1,9 +1,6 @@
 # Default values for websrv.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-redis:
-  architecture: standalone
-  resourcesPreset: nano
 
 replicaCount: 3
 strategy:
@@ -116,3 +113,8 @@ nodeSelector: {
 tolerations: []
 
 affinity: {}
+
+
+redis:
+  architecture: standalone
+  resourcesPreset: nano
