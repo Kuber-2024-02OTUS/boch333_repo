@@ -40,7 +40,7 @@ configMap:
   
 storageClass:
   enabled: true
-  provisioner: k8s.io/minikube-hostpath
+  provisioner: disk-csi-driver.mks.ycloud.io
   reclaimPolicy: Retain
   volumeBindingMode: Immediate
 
