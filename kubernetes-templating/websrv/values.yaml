@@ -46,7 +46,7 @@ storageClass:
 
 persistence:
   enabled: true
-  storageClass: false
+  storageClass: true
   accessMode: ReadWriteOnce
   size: 2Mi
 
