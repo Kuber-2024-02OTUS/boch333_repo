@@ -11,9 +11,6 @@ spec:
     path: kubernetes-templating/websrv
     targetRevision: kubernetes-gitops
     helm:     
-      values: |
-        namespace: homework
-        replicaCount: 1
       valueFiles:
       - values.yaml 
   destination:
