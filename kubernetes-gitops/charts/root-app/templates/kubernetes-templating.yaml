@@ -16,7 +16,7 @@ spec:
         namespace: homeworkhelm
         replicaCount: 1
       valueFiles:
-      - values.yaml 
+      - kubernetes-templating/websrv/values.yaml 
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
