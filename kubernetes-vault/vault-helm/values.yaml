@@ -1,0 +1,34 @@
+injector:
+  image:
+    repository: "dockerhub.timeweb.cloud/hashicorp/vault-k8s"
+  agentImage:
+    repository: "dockerhub.timeweb.cloud/hashicorp/vault"
+csi:
+  image:
+    repository: "dockerhub.timeweb.cloud/hashicorp/vault-csi-provider"
+agent:
+  image:
+    repository: "dockerhub.timeweb.cloud/hashicorp/vault"
+server:
+   image:
+     repository: "dockerhub.timeweb.cloud/hashicorp/vault" 
+   ha:
+    enabled: true
+    replicas: 3
+    config: |
+      ui = true
+
+      listener "tcp" {
+        tls_disable = 1
+        address = "[::]:8200"
+      }
+      storage "consul" {
+        path = "vault"
+        address = "consul-server.consul:8500"
+      }
+
+      service_registration "kubernetes" {}
+
+
+
+  

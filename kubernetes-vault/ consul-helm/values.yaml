@@ -1,0 +1,6 @@
+global:
+  name: consul
+  image: "dockerhub.timeweb.cloud/hashicorp/consul"
+  imageK8S: "dockerhub.timeweb.cloud/hashicorp/consul-k8s-control-plane"
+server:
+  replicas: 3
