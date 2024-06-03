@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: root-app
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: otus
+  source:
+    repoURL: "https://github.com/Kuber-2024-02OTUS/boch333_repo.git"
+    path: "kubernetes-gitops/charts/root-app"
+    targetRevision: "kubernetes-gitops"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      selfHeal: true

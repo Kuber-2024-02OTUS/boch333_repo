@@ -64,7 +64,7 @@
  - Все пункты кроме 5
       minikube start
       cd ./kubernetes-volumes
-      ubectl label nodes minikube homework=true
+      kubectl label nodes minikube homework=true
       kubectl create -f namespace.yaml
       kubectl apply -f deployment.yaml -f service.yaml -f ingress.yaml -f pvc.yaml -f configmap.yaml
  - Пункт 5

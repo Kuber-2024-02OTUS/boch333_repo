@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubernetes-templating
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: otus
+  source:
+    repoURL: "https://github.com/Kuber-2024-02OTUS/boch333_repo.git"
+    path: "kubernetes-templating/websrv"
+    targetRevision: "kubernetes-gitops"
+    helm: 
+      releaseName: websrv   
+      values: |
+        namespace: homeworkhelm
+        replicaCount: 1
+      valueFiles:
+      - values.yaml 
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+        prune: true 
+        selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

@@ -1,10 +1,6 @@
 # Default values for websrv.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-redis:
-  global:
-    redis:
-      password: ""
 
 replicaCount: 3
 strategy:
@@ -44,13 +40,13 @@ configMap:
   
 storageClass:
   enabled: true
-  provisioner: k8s.io/minikube-hostpath
+  provisioner: disk-csi-driver.mks.ycloud.io
   reclaimPolicy: Retain
   volumeBindingMode: Immediate
 
 persistence:
   enabled: true
-  storageClass: false
+  storageClass: true
   accessMode: ReadWriteOnce
   size: 2Mi
 
@@ -117,3 +113,8 @@ nodeSelector: {
 tolerations: []
 
 affinity: {}
+
+
+redis:
+  architecture: standalone
+  resourcesPreset: nano
