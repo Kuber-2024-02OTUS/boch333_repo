@@ -54,7 +54,7 @@
                
  - Результат смотрим через веб-интерфейсе бакета
 
-            ![alt text](k8s-csi-s3.PNG)
+![alt text](k8s-csi-s3.PNG)
 
 
 ## PR checklist:
