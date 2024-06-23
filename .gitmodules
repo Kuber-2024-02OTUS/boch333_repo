@@ -4,3 +4,6 @@
 [submodule "kubernetes-vault/vault-helm"]
 	path = kubernetes-vault/vault-helm
 	url = https://github.com/hashicorp/vault-helm.git
+[submodule "kubernetes-csi/k8s-csi-s3"]
+	path = kubernetes-csi/k8s-csi-s3
+	url = https://github.com/yandex-cloud/k8s-csi-s3.git
