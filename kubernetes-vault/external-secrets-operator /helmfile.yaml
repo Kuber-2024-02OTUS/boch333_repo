@@ -1,0 +1,8 @@
+repositories:
+- name: external-secrets
+  url: https://charts.external-secrets.io
+
+releases:
+- name: external-secrets
+  namespace: vault
+  chart: external-secrets/external-secrets
